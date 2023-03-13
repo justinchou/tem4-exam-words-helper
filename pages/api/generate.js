@@ -6,6 +6,7 @@ import words from "./tem4-words.json";
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
+const withVPN = !!process.env.WITH_VPN;
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
@@ -29,6 +30,19 @@ export default async function (req, res) {
       newWords * 25 > 600 ? newWords * 25 : 600
     } words with the following vocabularies: ${picks.join(", ")}`;
 
+    const options = {};
+    if (withVPN) {
+      options.proxy = {
+        host: "127.0.0.1",
+        port: "7890",
+        // auth: {
+        //   username: "",
+        //   password: "",
+        // },
+        protocol: "http",
+      };
+    }
+
     const completion = await openai.createChatCompletion(
       {
         // model: "text-davinci-003",
@@ -37,17 +51,7 @@ export default async function (req, res) {
         messages: [{ role: "user", content: question }],
         temperature: 0.6,
       },
-      {
-        proxy: {
-          host: "127.0.0.1",
-          port: "7890",
-          // auth: {
-          //   username: "",
-          //   password: "",
-          // },
-          protocol: "http",
-        },
-      }
+      options
     );
 
     const dicts = {};
