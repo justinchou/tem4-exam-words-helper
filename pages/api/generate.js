@@ -29,8 +29,11 @@ export default async function (req, res) {
     const question = `Write a short passage around ${
       newWords * 25 > 600 ? newWords * 25 : 600
     } words with the following vocabularies: ${picks.join(", ")}`;
+    console.log(question);
 
-    const options = {};
+    const options = {
+      timeout: 10000,
+    };
     if (withVPN) {
       options.proxy = {
         host: "127.0.0.1",
@@ -42,7 +45,7 @@ export default async function (req, res) {
         protocol: "http",
       };
     }
-    console.log(options);
+    console.log("chat-gpt-options %j", options);
 
     const completion = await openai.createChatCompletion(
       {
