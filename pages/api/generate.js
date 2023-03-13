@@ -20,7 +20,7 @@ export default async function (req, res) {
   }
 
   let newWords = parseInt(req.body.newWords) || 20;
-  if (newWords < 1) {
+  if (newWords < 1 || newWords > 30) {
     newWords = 20;
   }
 
