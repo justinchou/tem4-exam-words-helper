@@ -6,7 +6,7 @@ import words from "./tem4-words.json";
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
-const withVPN = !!process.env.WITH_VPN;
+const withVPN = process.env.WITH_VPN == "true";
 const openai = new OpenAIApi(configuration);
 
 export default async function (req, res) {
@@ -42,6 +42,7 @@ export default async function (req, res) {
         protocol: "http",
       };
     }
+    console.log(options);
 
     const completion = await openai.createChatCompletion(
       {
