@@ -32,7 +32,7 @@ export default async function (req, res) {
     console.log(question);
 
     const options = {
-      timeout: 10000,
+      timeout: 60000,
     };
     if (withVPN) {
       options.proxy = {
